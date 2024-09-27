@@ -1,0 +1,28 @@
+function updateClock() {
+    // Get the current time in UTC
+    const now = new Date();
+    const utcTime = now.getTime() + now.getTimezoneOffset() * 60000; // Convert current time to UTC in milliseconds
+
+    // Brisbane time is UTC + 10 hours (600 minutes)
+    const brisbaneOffset = 10 * 60 * 60000; // Offset in milliseconds
+    const brisbaneTime = new Date(utcTime + brisbaneOffset);
+
+    // Extract hours, minutes, and seconds from the Brisbane time
+    const hours = brisbaneTime.getUTCHours(); // We are working with UTC hours now
+    const minutes = brisbaneTime.getUTCMinutes();
+    const seconds = brisbaneTime.getUTCSeconds();
+
+    // Calculate the degrees for each hand
+    const hourDegrees = (hours % 12) * 30 + minutes * 0.5; // 30 degrees per hour + 0.5 per minute
+    const minuteDegrees = minutes * 6; // 6 degrees per minute
+    const secondDegrees = seconds * 6; // 6 degrees per second
+
+    // Set the rotation for each hand (adjusted by 90 degrees due to starting point)
+    document.getElementById('hour-hand').style.transform = `rotate(${hourDegrees + 90}deg)`;
+    document.getElementById('minute-hand').style.transform = `rotate(${minuteDegrees + 90}deg)`;
+    document.getElementById('second-hand').style.transform = `rotate(${secondDegrees + 90}deg)`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+updateClock(); // Initial call to display clock immediately
